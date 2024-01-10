@@ -2,14 +2,18 @@ import pandas as pd
 import tkinter as tk
 from pandastable import Table
 import os
+from tkinter import filedialog
+from tkinter import messagebox
 
 class MyApp:
     def __init__(self, master):
         self.master = master
+        """
         self.master.title('Aplication')
-        self.master.geometry("1000x500")
         self.master.resizable(False, False)
         self.global_df = None
+        self.master.geometry("1000x500")
+        """
 
         orders_name = os.listdir("../Dane/Zamowienia")
         button_labels = [str(name[:10] + " " + name[10:-4]) for name in orders_name]
@@ -77,10 +81,70 @@ class MyApp:
     def extract_number(item):
         return int(item.split('Zamowienie')[1])
 
+"""
 def main():
     root = tk.Tk()
     MyApp(root)
     root.mainloop()
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+    #main()
+
+"""
+
+root = tk.Tk()
+frame = tk.Frame(root)
+frame.pack(side="top", expand=True, fill="both")
+
+
+root.title('Warehouse planer')
+#root.iconbitmap('./assets/planer.ico')
+window_width = 1000 
+window_height = 500
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+center_x = int(screen_width/2 - window_width / 2)
+center_y = int(screen_height/2 - window_height / 2)
+
+root.resizable(False, False)
+root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
+
+def clean_window():
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+def choose_folder():
+    dict_path = filedialog.askdirectory(
+    title='Wybierz folder z zamówieniami', initialdir='/')
+    finded_csv = 0
+    try:
+        if dict_path != None:
+         for file in os.listdir(dict_path):
+            if file.endswith(".csv"):
+                finded_csv = 1
+                break
+        if finded_csv == 0:
+            messagebox.showerror("Błąd", "Nie znaleziono plików csv")
+        else:
+            clean_window()
+            MyApp(frame)
+#        tk.Label(frame, text ="This is a new window").pack()
+    except:
+        pass
+    
+
+choose_button = tk.Button(
+    frame,
+    text='Wybierz folder',
+    command=choose_folder
+)
+
+choose_button.pack(
+    ipadx=15,
+    ipady=5,
+    expand=True
+)
+
+root.mainloop()
