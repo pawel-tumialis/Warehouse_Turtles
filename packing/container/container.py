@@ -1,5 +1,6 @@
 import utilities.cnst as cnst
 from itertools import count
+from box.box import Box
 
 def rect_intersect(box1, box2, x, y):
     d1 = box1.get_dimension()
@@ -36,6 +37,9 @@ class EPAL:
     
     def __repr__(self):
         return f"[EPAL]: {self.id=}"
+    
+    def _gravity(box: Box):
+        pass
         
     def is_empty(self):
         return len(self.boxes) == 0

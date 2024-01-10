@@ -1,7 +1,7 @@
 from utilities import cnst     
 
 class Box():
-    def __init__(self, id, depth, width, height):
+    def __init__(self, id, width, depth, height):
         self.id = id
         self.width = width
         self.height = height
@@ -11,7 +11,7 @@ class Box():
         self.position = cnst.START_POSITION
 
     def __repr__(self):
-        return f"[BOX]: {self.id=}, {self.position=}, {self.width=}, {self.depth=}, {self.height=}"
+        return f"[BOX]: {self.position=}, {self.rotation_type=},\n{self.width=}, {self.depth=}, {self.height=}\n"
 
     def get_volume(self):
         return self.width * self.height * self.depth
