@@ -6,15 +6,9 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 class MyApp:
-    def __init__(self, master):
+    def __init__(self, master, path):
+        self.path = path
         self.master = master
-        """
-        self.master.title('Aplication')
-        self.master.resizable(False, False)
-        self.global_df = None
-        self.master.geometry("1000x500")
-        """
-
         orders_name = os.listdir("../Dane/Zamowienia")
         button_labels = [str(name[:10] + " " + name[10:-4]) for name in orders_name]
 
@@ -65,32 +59,27 @@ class MyApp:
         
 
     def button_clicked(self, label):
-        with open("../Dane/Zamowienia/" + str(label).replace(" ", "") + ".csv", "r") as file:
-            self.global_df = pd.read_csv(file)
-            self.global_df = self.global_df.rename(columns={self.global_df.columns[-1]: 'Ilosc'})
+        with open(self.path + "/" + str(label).replace(" ", "") + ".csv", "r") as file:
+            self.df = pd.read_csv(file)
+            self.df = self.df.rename(columns={self.df.columns[-1]: 'Ilosc'})
 
         # Clear existing content in the data_frame_frame
         for widget in self.data_frame_frame.winfo_children():
             widget.destroy()
 
-        # Display the Pandas DataFrame using pandastable
-        pt = Table(self.data_frame_frame, dataframe=self.global_df)
-        pt.show()
+        self.table = Table(self.data_frame_frame, dataframe=self.df)
+        self.table.show()
+
+        self.master.after(10, self.update)
+        
+    def update(self):
+        self.table.model.df = self.df
+        self.table.redraw()
 
     @staticmethod
     def extract_number(item):
         return int(item.split('Zamowienie')[1])
 
-"""
-def main():
-    root = tk.Tk()
-    MyApp(root)
-    root.mainloop()
-
-#if __name__ == "__main__":
-    #main()
-
-"""
 
 root = tk.Tk()
 frame = tk.Frame(root)
@@ -128,8 +117,9 @@ def choose_folder():
         if finded_csv == 0:
             messagebox.showerror("Błąd", "Nie znaleziono plików csv")
         else:
+            print(dict_path)
             clean_window()
-            MyApp(frame)
+            MyApp(frame, dict_path)
 #        tk.Label(frame, text ="This is a new window").pack()
     except:
         pass
