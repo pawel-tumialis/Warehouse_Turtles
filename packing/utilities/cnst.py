@@ -1,4 +1,4 @@
-START_POSITION = (0, 0, 0)
+START_POSITION = [0, 0, 0]
 DEFAULT_NUMBER_OF_DECIMALS = 3
 
 class RotationType:

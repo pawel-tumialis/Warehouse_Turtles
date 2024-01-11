@@ -27,9 +27,9 @@ class EPAL:
     _instance_count = count(start=1)
 
     WIDTH = 800
-    DEPTH = 1200
+    HEIGHT= 1200
     EPAL_HEIGHT = 144
-    HEIGHT = 2000 - EPAL_HEIGHT
+    DEPTH = 2000 - EPAL_HEIGHT
 
     def __init__(self):
         self.id = next(self._instance_count)
@@ -38,8 +38,20 @@ class EPAL:
     def __repr__(self):
         return f"[EPAL]: {self.id=}"
     
-    def _gravity(box: Box):
-        pass
+    def _gravity(self, new_box: Box, pivot):
+
+        while True:
+            new_box.position[2] -= 1
+            box_dimension = new_box.get_dimension()
+            if not self.is_inside(pivot, box_dimension):
+                new_box.position[2] += 1
+                return new_box
+            for box_in_container in self.boxes:
+                if intersect(box_in_container, new_box):
+                    new_box.position[2] += 1
+                    return new_box
+        new_box.position[2] += 1
+        return new_box
         
     def is_empty(self):
         return len(self.boxes) == 0
@@ -47,7 +59,10 @@ class EPAL:
     def is_inside(self, pivot, box_dimension):
         return not (EPAL.WIDTH  < pivot[0] + box_dimension[0] or 
                     EPAL.HEIGHT < pivot[1] + box_dimension[1] or 
-                    EPAL.DEPTH  < pivot[2] + box_dimension[2])
+                    EPAL.DEPTH  < pivot[2] + box_dimension[2] or 
+                    0 >= pivot[0] + box_dimension[0] or
+                    0 >= pivot[1] + box_dimension[1] or 
+                    0 >= pivot[2] + box_dimension[2])
 
 
     def get_volume(self):

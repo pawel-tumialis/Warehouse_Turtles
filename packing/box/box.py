@@ -3,7 +3,7 @@ from utilities import cnst
 class Box():
     def __init__(self, id, width, depth, height):
         self.id = id
-        self.width = width
+        self.width = width 
         self.height = height
         self.depth = depth
 

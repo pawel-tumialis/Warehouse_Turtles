@@ -35,6 +35,7 @@ class Packer:
             for con_box in container.boxes:
                 pivot = cnst.START_POSITION
                 w, h, d = con_box.get_dimension()
+
                 if axis == cnst.Axis.WIDTH:
                     pivot = [con_box.position[0] + w, con_box.position[1], con_box.position[2]]
                 elif axis == cnst.Axis.HEIGHT:
@@ -57,5 +58,7 @@ class Packer:
                     if self._pack2container(container, box):
                         self._remove_box(box)
                         fitted = True
+                
+
             if not fitted:
                 self._add_container()
