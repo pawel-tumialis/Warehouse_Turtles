@@ -28,7 +28,7 @@ class palety_marcel:
     def get_palety(self):
         return len(self.packer.containers)
 
-    def get(self, index):
+    def show(self, index):
         ploter = Plotter()
         fig = ploter.prepare_animated_plot(self.packer.containers[index])
         fig = ploter.prepare_plot(self.packer.containers[index])

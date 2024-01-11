@@ -52,7 +52,7 @@ class MyApp:
         """
         self.button_frame  = tk.Frame(self.master)
         self.button_frame.pack(side= "top", fill="x", pady=5)
-        button4frame = tk.Button(self.button_frame, text = "Analisys", command= self.Popup, height=3, width=15, font='Helvetica 10 bold')
+        button4frame = tk.Button(self.button_frame, text = "Analysis", command= self.Popup, height=3, width=15, font='Helvetica 10 bold')
         button4frame.pack()
 
         """
@@ -73,7 +73,7 @@ class MyApp:
 
     def marcel(self):
         self.marcel_top = tk.Toplevel(self.master)
-        window_width = int(self.marcel_top.winfo_screenwidth() * .48)
+        window_width = int(self.marcel_top.winfo_screenwidth() * .4)
         window_height = int(self.marcel_top.winfo_screenheight() - 200)
 
         center_x = int(0)
@@ -83,17 +83,20 @@ class MyApp:
         self.marcel_top.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
         
         self.marcel_top.title("PAKOWANIE")
-        tk.Button(self.marcel_top, text= "Palety", command=self.palety , font=('Arial 18 bold')).pack()
-
-    def palety(self):
         try:
             plik = mod_excel.order(self.path_order, self.path_product_list)
-            plik.get_data4packing()
+            palety = palety_marcel(plik.get_data4packing())
+            print(palety.get_palety())
         except:
             pass
         
-        palety = palety_marcel(plik.get_data4packing())
-        print(palety.get(0))
+        #lf = tk.Frame(self.marcel_top, height=30, width=100, padx=10)
+        #lf.pack(anchor="center")
+        #lf.pack_propagate(False)
+        for i in range(palety.get_palety()):
+            tk.Button(self.marcel_top, text= "Paleta " + str(i + 1), command= lambda l= i : palety.show(l) , font=('Arial 18 bold'), height=3, width=15).pack(anchor="center", pady= 10)
+            
+            
 
     def mati(self):
         
@@ -169,6 +172,7 @@ class MyApp:
     @staticmethod
     def extract_number(item):
         return int(item.split('Zamowienie')[1])
+
 
 
 root = tk.Tk()
