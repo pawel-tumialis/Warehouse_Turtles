@@ -25,6 +25,7 @@ def create_smoll_graph(df, warehouse):
 ### PATH FINDER ###
 
 def calc_dist(graph, path):
+    print(f"{path=}")
     dist = 0
     for idx in range(len(path)-1):
         dist += graph[path[idx]][path[idx+1]]
@@ -33,9 +34,10 @@ def calc_dist(graph, path):
 # implementation of traveling Salesman Problem 
 def travellingSalesmanProblem(graph, n):
     verticles = len(graph) 
+    print(f"{verticles=}")
     random_paths = [np.random.permutation(range(1,verticles-1)) for _ in range(n)]
     for i in range(len(random_paths)):
-        random_paths[i] = np.append(random_paths[i], np.array([19]))
+        random_paths[i] = np.append(random_paths[i], np.array([verticles]))
         random_paths[i] = np.insert(random_paths[i], 0, 0)
     
     min_dist, min_path = 300000, random_paths[0]
@@ -72,6 +74,6 @@ def find_path(df, warehouse):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('C:\dev\hest_hackaton\Droga.csv')
+    df = pd.read_csv('C:\\dev\\hest_hackaton\\Dane\\Zamowienia\\Zamowienie6.csv')
     find_path(df, create_warehouse())
    

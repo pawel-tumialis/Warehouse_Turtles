@@ -12,15 +12,21 @@ def dijkstra_len(warehouse, dijkstra):
 
 
 def create_smoll_graph(df, warehouse):
-
+    
     smoll_graph=nx.Graph()
     for i in range(len(df["Lokacja"])):
-        for j in range(i+1,len(df['Lokacja'])):
-            
+        for j in range(i+1,len(df['Lokacja'])): 
             alpha = 0.9 * dijkstra_len(warehouse, nx.dijkstra_path(warehouse, df['Lokacja'][i], df['Lokacja'][j])) + 0.1 * df["Waga (kg)"][i]
             smoll_graph.add_edge(df['Lokacja'][i], df['Lokacja'][j], weight=alpha)
 
     return smoll_graph
+
+def check(df, nodes):
+    for index, row in df.iterrows():
+        name = row['Lokacja']
+        if not (name in nodes):
+            df = df.drop(df.index[index]).reset_index(drop=True)
+    return df
 
 ### PATH FINDER ###
 
@@ -35,7 +41,7 @@ def travellingSalesmanProblem(graph, n):
     verticles = len(graph) 
     random_paths = [np.random.permutation(range(1,verticles-1)) for _ in range(n)]
     for i in range(len(random_paths)):
-        random_paths[i] = np.append(random_paths[i], np.array([19]))
+        random_paths[i] = np.append(random_paths[i], np.array([verticles-1]))
         random_paths[i] = np.insert(random_paths[i], 0, 0)
     
     min_dist, min_path = 300000, random_paths[0]
@@ -55,6 +61,8 @@ def find_path(df):
     df = pd.concat([df, new_record2], ignore_index=True)
     df = pd.concat([new_record, df], ignore_index=True)
 
+    warehouse_nodes = warehouse.nodes()
+    df = check(df, warehouse_nodes)
     
 
     smoll_graph = create_smoll_graph(df, warehouse)

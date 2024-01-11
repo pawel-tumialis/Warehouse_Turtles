@@ -15,7 +15,7 @@ class MyApp:
         self.path_product_list = None
         self.path_order = None
         self.step_iter = 0
-        self.road = [str(i) for i in range(20)]
+        self.road = None
         self.path = path
         self.master = master
         orders_name = os.listdir(path)
@@ -137,19 +137,19 @@ class MyApp:
             self.step_iter = 0
             
     def create_table(self, head, step):
-        
-        for i in range(len(self.road)//10):
+        n = 20
+        for i in range(len(self.road)//n +1):
             f = tk.Frame(head, height=30, width=100)
             f.pack(side="left")
-            for j in range(10):
-                lf = tk.LabelFrame(f, height=30, width=100, padx=10)
-                lf.pack(anchor="w")
-                lf.pack_propagate(False)
+            for j in range(n):
                 try:
-                    message = tk.Message(lf, text=str(self.road[i*10 + j]), font=('Arial 14 bold'))
+                    lf = tk.LabelFrame(f, height=35, width=120, padx=5)
+                    lf.pack(anchor="w")
+                    lf.pack_propagate(False)
+                    message = tk.Message(lf, text=str(self.road[i*n + j]), font=('Arial 8 bold'))
                 except:
                     pass
-                if step == i*10 + j:
+                if step == i*n + j:
                     message.config(bg="green")
 
                 message.pack()
