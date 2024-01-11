@@ -30,4 +30,6 @@ class order:
         return self.result
     
     def get_data4road(self): #STAD BEDZIEMY ZBIERAC DANE NA TEMAT 1 ETAPU
-        return self.result[["ID Produktu","Nazwa Produktu", "Lokacja","Ilosc", "Waga (kg)"]]
+        dane = self.result[["ID Produktu","Nazwa Produktu", "Lokacja","Ilosc", "Waga (kg)"]].copy()
+        dane["Lokacja"] = dane["Lokacja"].apply(lambda x: str(x[:4] + x[5:]))
+        return dane
