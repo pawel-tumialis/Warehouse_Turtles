@@ -6,6 +6,8 @@ from tkinter import filedialog
 from tkinter import messagebox
 import mod_excel
 from palety import palety_marcel
+from graph.path_finding import find_path
+#from graph.graph import create_warehouse
 
 class MyApp:
     def __init__(self, master, path):
@@ -111,6 +113,14 @@ class MyApp:
         self.mati_top.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
         
         self.mati_top.title("DROGA")
+
+        try:
+            plik = mod_excel.order(self.path_order, self.path_product_list)
+            df = plik.get_data4road()
+        except:
+            pass
+        self.road = find_path(df)
+        print(self.road)
 
         tk.Button(self.mati_top, text= "Next step", command=self.next_highlight , font=('Arial 18 bold')).pack()
         self.create_table(self.mati_top,0)
